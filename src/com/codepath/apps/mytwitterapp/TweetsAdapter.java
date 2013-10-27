@@ -24,27 +24,27 @@ public class TweetsAdapter extends ArrayAdapter<Tweet>{
 	}
    
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View view = convertView;
-		if(view == null)
+		//View view = convertView;
+		if(convertView == null)
 		{
 			//LayoutInflater inflater = LayoutInflater.from(getContext());
 			LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			view = inflater.inflate(R.layout.tweet_item, null);
+			convertView = inflater.inflate(R.layout.tweet_item, null);
 		}
 		
 		Tweet tweet = (Tweet) getItem(position);
 		
-		ImageView imgView = (ImageView)view.findViewById(R.id.ivProfile);
+		ImageView imgView = (ImageView)convertView.findViewById(R.id.ivProfile);
 		ImageLoader.getInstance().displayImage(tweet.getUser().getProfileImageUrl(), imgView);
 		
-		TextView nameView = (TextView) view.findViewById(R.id.tvName);
+		TextView nameView = (TextView) convertView.findViewById(R.id.tvName);
 		String name = "<b>" + tweet.getUser().getName() +"</b>";
 		nameView.setText(Html.fromHtml(name));
-		TextView bodyView = (TextView) view.findViewById(R.id.tvBody);
+		TextView bodyView = (TextView) convertView.findViewById(R.id.tvBody);
 		String body =  tweet.getBody();
 		bodyView.setText(body);
 		
-		return view;
+		return convertView;
  		
 	}
 

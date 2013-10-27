@@ -32,11 +32,12 @@ public class ComposeActivity extends Activity {
 				MyTwitterApp.getRestClient().postTweet(new JsonHttpResponseHandler(){
 					public void onSuccess(JSONObject jsonTweet)
 					{
+						Log.d("PostTweet", jsonTweet.toString());
 						Tweet tweet1 = Tweet.fromJson(jsonTweet);
-					
-						Intent data = new Intent();
-						
-						data.putExtra("tweet", tweet1);
+						Log.d("Tweet1", tweet1.getBody());
+						Intent data = new Intent(getBaseContext(), TimelineActivity.class);
+						data.putExtra("string", status);
+						data.putExtra("tweetposted", tweet1);
 					
 						setResult(RESULT_OK, data);
 						finish();

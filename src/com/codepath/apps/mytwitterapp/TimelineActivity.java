@@ -22,8 +22,8 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 public class TimelineActivity extends Activity {
 	private TweetsAdapter lvadapter;
 	private ListView lvView;
-	private long maxId;
-	
+	private long maxId = 0;
+	ArrayList<Tweet> tweets;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -33,7 +33,24 @@ public class TimelineActivity extends Activity {
 			@Override
 			public void loadMore(int page, int totalItemsCount) {
 				View v = getCurrentFocus();
-				MyTwitterApp.getRestClient().getHomeTimeline(new JsonHttpResponseHandler(),totalItemsCount,maxId);
+				MyTwitterApp.getRestClient().getHomeTimeline(new JsonHttpResponseHandler(){
+					
+
+					public void onSuccess(JSONArray jsonTweets)
+					{
+						ArrayList<Tweet> moretweets = Tweet.fromJson(jsonTweets);
+						tweets.addAll(moretweets);
+						maxId = tweets.get(tweets.size() - 1).getId();
+						lvadapter.notifyDataSetChanged();
+					}
+					
+					public void onFailure(Throwable e, JSONObject error) {
+					    // Handle the failure and alert the user to retry
+					    Log.e("ERROR", e.toString());
+					  }
+				},totalItemsCount,maxId);
+				
+			
 
 			}
 		});
@@ -42,13 +59,11 @@ public class TimelineActivity extends Activity {
 
 			public void onSuccess(JSONArray jsonTweets)
 			{
-				ArrayList<Tweet> tweets = Tweet.fromJson(jsonTweets);
+				tweets = Tweet.fromJson(jsonTweets);
 				
 				lvadapter = new TweetsAdapter(getBaseContext(), tweets);
-				if(tweets.size()==5)
-				{
-				       maxId = tweets.get(4).getId();
-				}
+				maxId = tweets.get(tweets.size() - 1).getId();
+				
 				lvView.setAdapter(lvadapter);
 				Log.d("DEBUG",jsonTweets.toString());
 			}
@@ -57,7 +72,7 @@ public class TimelineActivity extends Activity {
 			    // Handle the failure and alert the user to retry
 			    Log.e("ERROR", e.toString());
 			  }
-		},5,maxId);
+		},10,maxId);
 		
 	
 
@@ -87,10 +102,14 @@ public class TimelineActivity extends Activity {
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == 1 && resultCode == RESULT_OK) {
-			
-          Tweet tweet = (Tweet) getIntent().getSerializableExtra("tweet");
+			String str = (String) data.getStringExtra("string");
+          Tweet tweet = (Tweet) data.getSerializableExtra("tweetposted");
+          Log.d("Status is", str);
+          Log.d("Tweet is",tweet.getBody());
          // lvadapter.add(tweet);
-          lvadapter.insert(tweet,0);
+         // lvadapter.insert(tweet,0);
+          tweets.add(0, tweet);
+          lvadapter.notifyDataSetChanged();
           
 		}
 

@@ -1,12 +1,18 @@
 package com.codepath.apps.mytwitterapp.models;
 
+import java.io.Serializable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class BaseModel {
+public class BaseModel implements Serializable {
     
-    protected JSONObject jsonObject;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	protected JSONObject jsonObject;
 
     public String getJSONString() {
         return jsonObject.toString();
