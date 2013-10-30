@@ -1,1 +1,1 @@
-Twitter Client.
+Twitter Client with infinite scroll.

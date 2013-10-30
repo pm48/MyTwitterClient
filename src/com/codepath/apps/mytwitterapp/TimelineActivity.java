@@ -1,5 +1,6 @@
 package com.codepath.apps.mytwitterapp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -32,7 +33,7 @@ public class TimelineActivity extends Activity {
 		lvView.setOnScrollListener(new EndlessScrollListener() {
 			@Override
 			public void loadMore(int page, int totalItemsCount) {
-				View v = getCurrentFocus();
+				//View v = getCurrentFocus();
 				MyTwitterApp.getRestClient().getHomeTimeline(new JsonHttpResponseHandler(){
 					
 
@@ -62,6 +63,7 @@ public class TimelineActivity extends Activity {
 				tweets = Tweet.fromJson(jsonTweets);
 				
 				lvadapter = new TweetsAdapter(getBaseContext(), tweets);
+				
 				maxId = tweets.get(tweets.size() - 1).getId();
 				
 				lvView.setAdapter(lvadapter);
@@ -102,16 +104,16 @@ public class TimelineActivity extends Activity {
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == 1 && resultCode == RESULT_OK) {
-			String str = (String) data.getStringExtra("string");
+		//	if (data.getSerializableExtra("tweetposted") != null) {
           Tweet tweet = (Tweet) data.getSerializableExtra("tweetposted");
-          Log.d("Status is", str);
+          
           Log.d("Tweet is",tweet.getBody());
          // lvadapter.add(tweet);
          // lvadapter.insert(tweet,0);
           tweets.add(0, tweet);
           lvadapter.notifyDataSetChanged();
-          
-		}
+          }
+		//}
 
 }
 }

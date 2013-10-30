@@ -7,40 +7,49 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Tweet extends BaseModel implements Serializable {
+public class Tweet implements Serializable {
     /**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	private User user;
+	private static final long serialVersionUID = -5027116288905358762L;
+	/**
+	 * 
+	 */
+	
+	
+        private String body;
+        private long uid;
+        private boolean favorited;
+        private boolean retweeted;
+    private User user;
 
-  
-
-	public User getUser() {
+    public User getUser() {
         return user;
     }
 
     public String getBody() {
-        return getString("text");
+        return body;
     }
 
-    
     public long getId() {
-        return getLong("id");
+        return uid;
     }
 
     public boolean isFavorited() {
-        return getBoolean("favorited");
+        return favorited;
     }
 
     public boolean isRetweeted() {
-        return getBoolean("retweeted");
+        return retweeted;
     }
 
     public static Tweet fromJson(JSONObject jsonObject) {
         Tweet tweet = new Tweet();
         try {
-            tweet.jsonObject = jsonObject;
+                tweet.body = jsonObject.getString("text");
+                tweet.uid = jsonObject.getLong("id");
+              //  tweet.favorited = jsonObject.getBoolean("favorited");
+               // tweet.retweeted = jsonObject.getBoolean("retweeted");
             tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
         } catch (JSONException e) {
             e.printStackTrace();
