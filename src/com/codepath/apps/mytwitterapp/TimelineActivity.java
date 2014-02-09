@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,7 +21,7 @@ import com.codepath.apps.mytwitterapp.models.Tweet;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-public class TimelineActivity extends Activity {
+public class TimelineActivity extends FragmentActivity {
 	private TweetsAdapter lvadapter;
 	private ListView lvView;
 	private long maxId = 0;
@@ -29,7 +30,7 @@ public class TimelineActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_time_line);
-		lvView = (ListView) findViewById(R.id.lVtweets);
+		lvView = (ListView) findViewById(R.id.lvTweets);
 		lvView.setOnScrollListener(new EndlessScrollListener() {
 			@Override
 			public void loadMore(int page, int totalItemsCount) {
